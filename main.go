@@ -6,6 +6,21 @@ import (
 	"github.com/parnurzeal/gorequest"
 )
 
+type Text struct {
+	Type string `json:"type"`
+	Text string `json:"text"`
+}
+type Accessory struct {
+	Type     string `json:"type"`
+	ImageURL string `json:"image_url"`
+	AltText  string `json:"alt_text"`
+}
+type Block struct {
+	Type      string    `json:"type"`
+	BlockID   string    `json:"block_id"`
+	Text      Text      `json:"text"`
+	Accessory Accessory `json:"accessory"`
+}
 type Field struct {
 	Title string `json:"title"`
 	Value string `json:"value"`
@@ -13,10 +28,10 @@ type Field struct {
 }
 
 type Action struct {
-	Type	string   `json:"type"`
-	Text	string   `json:"text"`
-	Url 	string   `json:"url"`
-	Style 	string   `json:"style"`
+	Type  string `json:"type"`
+	Text  string `json:"text"`
+	Url   string `json:"url"`
+	Style string `json:"style"`
 }
 
 type Attachment struct {
@@ -49,6 +64,7 @@ type Payload struct {
 	Text        string       `json:"text,omitempty"`
 	LinkNames   string       `json:"link_names,omitempty"`
 	Attachments []Attachment `json:"attachments,omitempty"`
+	Blocks      []Block      `json:"blocks,omitempty"`
 	UnfurlLinks bool         `json:"unfurl_links,omitempty"`
 	UnfurlMedia bool         `json:"unfurl_media,omitempty"`
 	Markdown    bool         `json:"mrkdwn,omitempty"`
