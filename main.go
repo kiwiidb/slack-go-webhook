@@ -2,13 +2,15 @@ package slack
 
 import (
 	"fmt"
+	"io/ioutil"
 
 	"github.com/parnurzeal/gorequest"
 )
 
 type Text struct {
-	Type string `json:"type"`
-	Text string `json:"text"`
+	Type  string `json:"type"`
+	Text  string `json:"text"`
+	Emoji bool   `json:"emoji"`
 }
 type Accessory struct {
 	Type     string `json:"type"`
@@ -19,6 +21,7 @@ type Block struct {
 	Type      string    `json:"type"`
 	BlockID   string    `json:"block_id"`
 	Text      Text      `json:"text"`
+	Title     Text      `json:"title"`
 	Accessory Accessory `json:"accessory"`
 }
 type Field struct {
@@ -96,7 +99,9 @@ func Send(webhookUrl string, proxy string, payload Payload) []error {
 		return err
 	}
 	if resp.StatusCode >= 400 {
-		return []error{fmt.Errorf("Error sending msg. Status: %v", resp.Status)}
+		respBytes, _ := ioutil.ReadAll(resp.Body)
+		fmt.Println(string(respBytes))
+		return []error{fmt.Errorf("Error sending msg. Status: %v, body: %s", resp.Status, string(respBytes))}
 	}
 
 	return nil
